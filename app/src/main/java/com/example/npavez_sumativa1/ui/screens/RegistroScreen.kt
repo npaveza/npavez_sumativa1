@@ -2,20 +2,22 @@ package com.example.npavez_sumativa1.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-
-val usuarios = mutableListOf<Pair<String, String>>() // Lista global de usuarios
+// Se utiliza la lista global de usuarios
+import com.example.npavez_sumativa1.data.usuarios
 
 @Composable
 fun RegistroScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -37,11 +39,30 @@ fun RegistroScreen(navController: NavController) {
             label = { Text("Confirmar Contraseña") },
             visualTransformation = PasswordVisualTransformation()
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+        if (errorMessage.isNotEmpty()) {
+            Text(
+                text = errorMessage,
+                color = androidx.compose.ui.graphics.Color.Red,
+                style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
         Button(onClick = {
-            if (password == confirmPassword) {
-                usuarios.add(email to password)
-                navController.navigate("login")
+            when {
+                email.isBlank() || password.isBlank() -> {
+                    errorMessage = "Todos los campos son obligatorios"
+                }
+                password != confirmPassword -> {
+                    errorMessage = "Las contraseñas no coinciden"
+                }
+                usuarios.any { it.first == email } -> {
+                    errorMessage = "El correo ya está registrado"
+                }
+                else -> {
+                    usuarios.add(email to password)
+                    navController.navigate("login")
+                }
             }
         }) {
             Text("Registrarse")
