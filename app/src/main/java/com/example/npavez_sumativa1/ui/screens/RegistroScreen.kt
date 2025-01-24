@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-// Se utiliza la lista global de usuarios
 import com.example.npavez_sumativa1.data.usuarios
 
 @Composable

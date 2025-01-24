@@ -8,7 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.npavez_sumativa1.data.usuarios // Se utiliza la lista global de usuarios
+import com.example.npavez_sumativa1.data.currentUser
+import com.example.npavez_sumativa1.data.usuarios
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -24,21 +25,23 @@ fun LoginScreen(navController: NavController) {
         TextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Email") }
+            label = { Text("Email") },
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         TextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         if (errorMessage.isNotEmpty()) {
             Text(
                 text = errorMessage,
                 color = androidx.compose.ui.graphics.Color.Red,
-                style = androidx.compose.material3.MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -48,8 +51,11 @@ fun LoginScreen(navController: NavController) {
             } else {
                 val user = usuarios.find { it.first == email && it.second == password }
                 if (user != null) {
+                    currentUser = user // Establece el usuario actual
                     errorMessage = ""
-                    navController.navigate("home")
+                    navController.navigate("home") {
+                        popUpTo("login") { inclusive = true }
+                    }
                 } else {
                     errorMessage = "Correo o contraseña incorrectos."
                 }

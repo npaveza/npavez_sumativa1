@@ -12,7 +12,6 @@ import com.example.npavez_sumativa1.data.logout
 
 @Composable
 fun HomeScreen(navController: NavController) {
-    // Accede al primer elemento del Pair o muestra "Invitado"
     val email = currentUser?.first ?: "Invitado"
 
     Column(
@@ -27,8 +26,11 @@ fun HomeScreen(navController: NavController) {
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = { navController.navigate("recetas") }) {
+            Text("Ver Recetas")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = {
-            // Llama a la función logout y navega a login
             logout()
             navController.navigate("login") {
                 popUpTo("home") { inclusive = true }
