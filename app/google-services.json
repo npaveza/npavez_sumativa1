@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646908538000",
+    "project_id": "recetas-1bd08",
+    "storage_bucket": "recetas-1bd08.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646908538000:android:42544947ebb9cd038e3c15",
+        "android_client_info": {
+          "package_name": "com.example.npavez_sumativa1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9qU953lNbQIcs6VyaYUBOGa0HeStXZVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

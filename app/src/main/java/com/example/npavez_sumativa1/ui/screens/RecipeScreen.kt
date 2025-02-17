@@ -70,7 +70,7 @@ fun RecipeScreen(navController: NavController) {
                 items(recetas.size) { index ->
                     ClickableText(
                         text = AnnotatedString(recetas[index].nombre),
-                        onClick = { navController.navigate("detalle_receta/$index") },
+                        onClick = { navController.navigate("detalle_receta/${recetas[index].id}") },
                         modifier = Modifier.padding(8.dp)
                     )
                     Divider()
