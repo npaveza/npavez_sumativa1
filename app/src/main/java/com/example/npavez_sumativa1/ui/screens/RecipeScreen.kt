@@ -1,5 +1,10 @@
 package com.example.npavez_sumativa1.ui.screens
 
+import android.content.Intent
+import android.os.Bundle
+import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
+import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.ClickableText
@@ -7,16 +12,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.npavez_sumativa1.data.Receta
 import com.google.firebase.database.*
+import java.util.Locale
 
 @Composable
 fun RecipeScreen(navController: NavController) {
+    val context = LocalContext.current
+    val tts = remember { TextToSpeech(context) { } }
     var recetas by remember { mutableStateOf<List<Receta>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
+    val speechRecognizer = remember { SpeechRecognizer.createSpeechRecognizer(context) }
 
     // Cargar recetas desde Firebase
     LaunchedEffect(Unit) {
@@ -25,29 +35,17 @@ fun RecipeScreen(navController: NavController) {
 
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val listaRecetas = mutableListOf<Receta>()
-                for (data in snapshot.children) {
-                    val receta = data.getValue(Receta::class.java)
-                    if (receta != null) {
-                        // Conversión de MutableList a List
-                        receta.ingredientes = receta.ingredientes.toList()
-                        println("Receta cargada: ${receta.nombre}")
-                        listaRecetas.add(receta)
-                    }
-                }
+                val listaRecetas = snapshot.children.mapNotNull { it.getValue(Receta::class.java) }
                 recetas = listaRecetas
-                println("Total recetas cargadas: ${recetas.size}")
                 isLoading = false
             }
 
             override fun onCancelled(error: DatabaseError) {
-                println("Error al cargar recetas: ${error.message}")
                 isLoading = false
             }
         })
     }
 
-    // Interfaz de usuario
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +60,7 @@ fun RecipeScreen(navController: NavController) {
         )
 
         if (isLoading) {
-            CircularProgressIndicator()  // Muestra un indicador de carga
+            CircularProgressIndicator()
         } else if (recetas.isEmpty()) {
             Text("No hay recetas disponibles.")
         } else {
@@ -79,8 +77,66 @@ fun RecipeScreen(navController: NavController) {
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para escuchar nombres de recetas
+        Button(onClick = {
+            val nombres = recetas.joinToString(", ") { it.nombre }
+            tts.speak("Las recetas disponibles son: $nombres. Diga el nombre de una para seleccionarla.", TextToSpeech.QUEUE_FLUSH, null, null)
+        }) {
+            Text("Escuchar recetas")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Botón para activar reconocimiento de voz
+        Button(onClick = {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, "es-MX")
+                putExtra(RecognizerIntent.EXTRA_PROMPT, "Diga el nombre de una receta")
+            }
+            speechRecognizer.startListening(intent)
+        }) {
+            Text("Decir receta")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(onClick = { navController.navigate("home") }) {
             Text("Volver a Home")
+        }
+    }
+
+    DisposableEffect(Unit) {
+        speechRecognizer.setRecognitionListener(object : android.speech.RecognitionListener {
+            override fun onResults(results: Bundle?) {
+                val matches = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION) ?: return
+                val recognizedText = matches.firstOrNull()?.lowercase(Locale.ROOT) ?: return
+
+                val recetaEncontrada = recetas.find { it.nombre.lowercase(Locale.ROOT) == recognizedText }
+                if (recetaEncontrada != null) {
+                    navController.navigate("detalle_receta/${recetaEncontrada.id}")
+                } else {
+                    tts.speak("No se encontró la receta mencionada.", TextToSpeech.QUEUE_FLUSH, null, null)
+                }
+            }
+
+            override fun onError(error: Int) {
+                tts.speak("Error al reconocer la voz. Intente de nuevo.", TextToSpeech.QUEUE_FLUSH, null, null)
+            }
+
+            override fun onReadyForSpeech(params: Bundle?) {}
+            override fun onBeginningOfSpeech() {}
+            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onBufferReceived(buffer: ByteArray?) {}
+            override fun onEndOfSpeech() {}
+            override fun onPartialResults(partialResults: Bundle?) {}
+            override fun onEvent(eventType: Int, params: Bundle?) {}
+        })
+
+        onDispose {
+            speechRecognizer.destroy()
+            tts.shutdown()
         }
     }
 }

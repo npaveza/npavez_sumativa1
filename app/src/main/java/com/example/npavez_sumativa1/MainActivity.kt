@@ -1,10 +1,13 @@
 package com.example.npavez_sumativa1
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,6 +21,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Verificar y solicitar permisos de micrófono
+        solicitarPermisos()
         // Inicializa las recetas en la base de datos
         guardarRecetasIniciales()
 
@@ -26,6 +31,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 AppNavigation(navController)
             }
+        }
+    }
+
+    private fun solicitarPermisos() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
         }
     }
 
