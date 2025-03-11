@@ -35,10 +35,33 @@ fun HomeScreen(navController: NavController) {
         ) {
             Text(text = "Bienvenido $email", style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { navController.navigate("recetas") }) {
-                Text("Ver Recetas")
+
+            // Botón para recetas generales (con carne)
+            Button(
+                onClick = { navController.navigate("recetas_generales") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF8B0A1A), // Color rojo-marrón para dar un toque cálido
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Ver Recetas Generales")
             }
+
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Botón para recetas vegetarianas
+            Button(
+                onClick = { navController.navigate("recetas_veganas") },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF3E8E41), // Color verde para dar un toque natural
+                    contentColor = Color.White
+                )
+            ) {
+                Text("Ver Recetas Vegetarianas")
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(
                 onClick = {
                     logout()

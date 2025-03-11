@@ -21,7 +21,7 @@ import com.google.firebase.database.*
 import java.util.Locale
 
 @Composable
-fun RecipeScreen(navController: NavController) {
+fun RecipeScreen(navController: NavController, esVegana: Boolean) {
     val context = LocalContext.current
     val tts = remember { TextToSpeech(context) { } }
     var recetas by remember { mutableStateOf<List<Receta>>(emptyList()) }
@@ -36,10 +36,15 @@ fun RecipeScreen(navController: NavController) {
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val listaRecetas = snapshot.children.mapNotNull { it.getValue(Receta::class.java) }
-                recetas = listaRecetas
+
+                // Filtrar recetas según esVegana
+                recetas = if (esVegana) {
+                    listaRecetas.filter { it.esVegana }
+                } else {
+                    listaRecetas.filter { !it.esVegana }
+                }
                 isLoading = false
             }
-
             override fun onCancelled(error: DatabaseError) {
                 isLoading = false
             }

@@ -35,7 +35,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun solicitarPermisos() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
         }
     }
@@ -48,35 +52,238 @@ class MainActivity : ComponentActivity() {
         ref.get().addOnSuccessListener { snapshot ->
             if (!snapshot.exists()) {
                 val recetas = listOf(
+                    // 10 RECETAS GENERALES
                     Receta(
                         id = ref.push().key ?: "",
-                        nombre = "Spaghetti a la Boloñesa",
-                        ingredientes = listOf("Spaghetti", "Carne molida", "Tomate", "Cebolla", "Ajo"),
-                        pasos = "1. Cocina el spaghetti.\n2. Prepara la salsa boloñesa sofriendo cebolla con ajo, echando sal y pimienta a gusto, carne molida y tomate. \n3. Mezcla y sirve."
+                        nombre = "Arroz con Mariscos",
+                        ingredientes = listOf(
+                            "Arroz",
+                            "Mariscos",
+                            "Cebolla",
+                            "Ajo",
+                            "Tomate",
+                            "Pimentón",
+                            "Sal"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega los mariscos y cocina hasta que estén tiernos.\n3. Mezcla con arroz cocido, tomate picado, pimentón y sal.",
+                        esVegana = false
                     ),
                     Receta(
                         id = ref.push().key ?: "",
-                        nombre = "Ensalada César",
-                        ingredientes = listOf("Lechuga", "Crutones", "Queso parmesano", "Aderezo César"),
-                        pasos = "1. Lava la lechuga.\n2. Mezcla los ingredientes.\n3. Sirve con aderezo."
+                        nombre = "Pollo al Curry",
+                        ingredientes = listOf(
+                            "Pollo",
+                            "Cebolla",
+                            "Ajo",
+                            "Curry",
+                            "Leche de coco",
+                            "Arroz"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega el pollo y cocina hasta que esté dorado.\n3. Mezcla con curry, leche de coco y arroz cocido.",
+                        esVegana = false
                     ),
                     Receta(
                         id = ref.push().key ?: "",
-                        nombre = "Tacos de Pollo",
-                        ingredientes = listOf("Tortillas", "Pollo desmenuzado", "Lechuga", "Tomate", "Queso rallado"),
-                        pasos = "1. Calienta las tortillas.\n2. Cocina el pollo con tus especias favoritas.\n3. Coloca el pollo en las tortillas y agrega lechuga, tomate y queso."
+                        nombre = "Tallarines con Salsa de Tomate",
+                        ingredientes = listOf(
+                            "Tallarines",
+                            "Tomate",
+                            "Cebolla",
+                            "Ajo",
+                            "Albahaca",
+                            "Queso"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega los tomates y cocina hasta que estén suaves.\n3. Mezcla con albahaca, queso y tallarines cocidos.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Churrasco con Chimichurri",
+                        ingredientes = listOf(
+                            "Churrasco",
+                            "Perejil",
+                            "Ajo",
+                            "Limón",
+                            "Aceite de oliva"
+                        ),
+                        pasos = "1. Mezcla perejil, ajo, limón y aceite de oliva para hacer el chimichurri.\n2. Asa el churrasco a la parrilla hasta que esté cocido.\n3. Sirve con chimichurri.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Salmón a la Parrilla",
+                        ingredientes = listOf(
+                            "Salmón",
+                            "Limón",
+                            "Aceite de oliva",
+                            "Sal",
+                            "Pimienta"
+                        ),
+                        pasos = "1. Sazona el salmón con limón, aceite de oliva, sal y pimienta.\n2. Asa a la parrilla hasta que esté cocido.\n3. Sirve caliente.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Pollo Frito",
+                        ingredientes = listOf("Pollo", "Harina", "Huevo", "Pan rallado", "Aceite"),
+                        pasos = "1. Mezcla harina, huevo y pan rallado para hacer la mezcla de rebozo.\n2. Reboza el pollo con la mezcla.\n3. Fríe en aceite caliente hasta que esté dorado y crujiente.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Ensalada de Atún",
+                        ingredientes = listOf("Atún", "Lechuga", "Tomate", "Cebolla", "Mayonesa"),
+                        pasos = "1. Mezcla atún, lechuga, tomate y cebolla.\n2. Aliña con mayonesa.\n3. Sirve fresco.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Tacos de Carne",
+                        ingredientes = listOf(
+                            "Carne molida",
+                            "Cebolla",
+                            "Ajo",
+                            "Tortillas",
+                            "Salsa",
+                            "Queso"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega la carne molida y cocina hasta que esté dorada.\n3. Sirve en tortillas con salsa y queso.",
+                        esVegana = false
                     ),
                     Receta(
                         id = ref.push().key ?: "",
                         nombre = "Sopa de Verduras",
-                        ingredientes = listOf("Zanahoria", "Papa", "Cebolla", "Apio", "Caldo de pollo"),
-                        pasos = "1. Corta las verduras en trozos pequeños.\n2. Cocina las verduras en el caldo a fuego medio hasta que estén tiernas.\n3. Sirve caliente."
+                        ingredientes = listOf(
+                            "Verduras",
+                            "Caldo",
+                            "Cebolla",
+                            "Ajo",
+                            "Aceite de oliva"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega las verduras y caldo.\n3. Cocina hasta que las verduras estén tiernas. Sirve caliente.",
+                        esVegana = false
                     ),
                     Receta(
                         id = ref.push().key ?: "",
-                        nombre = "Pizza Margherita",
-                        ingredientes = listOf("Masa de pizza", "Salsa de tomate", "Mozzarella", "Hojas de albahaca", "Aceite de oliva"),
-                        pasos = "1. Precalienta el horno a 200°C.\n2. Extiende la salsa de tomate sobre la masa.\n3. Añade mozzarella y hornea hasta que el queso se derrita.\n4. Decora con hojas de albahaca y un chorrito de aceite de oliva."
+                        nombre = "Empanadas de Carne",
+                        ingredientes = listOf(
+                            "Carne molida",
+                            "Cebolla",
+                            "Ajo",
+                            "Masa de empanadas",
+                            "Huevo"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega la carne molida y cocina hasta que esté dorada.\n3. Rellena las masas de empanadas con la mezcla y hornea hasta que estén doradas.",
+                        esVegana = false
+                    ),
+                    // 10 RECETAS VEGETARIANAS
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Risotto de Champiñones",
+                        ingredientes = listOf(
+                            "Arroz arborio",
+                            "Champiñones",
+                            "Caldo de verduras",
+                            "Queso parmesano",
+                            "Cebolla"
+                        ),
+                        pasos = "1. Sofríe la cebolla y los champiñones en aceite de oliva hasta que estén suaves.\n2. Agrega el arroz y caldo poco a poco.\n3. Incorpora queso parmesano y sirve.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Gnocchi de Espinaca con Salsa de Queso",
+                        ingredientes = listOf("Harina", "Espinaca", "Huevo", "Queso crema"),
+                        pasos = "1. Mezcla harina y espinaca hasta formar una masa.\n2. Corta y hierve los gnocchi.\n3. Sirve con salsa de queso crema.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Tarta de Zapallito Italiano",
+                        ingredientes = listOf(
+                            "Masa de tarta",
+                            "Zapallito italiano",
+                            "Huevo",
+                            "Queso"
+                        ),
+                        pasos = "1. Cocina el zapallito y mézclalo con huevo.\n2. Coloca sobre la masa y agrega queso.\n3. Hornea hasta que cuaje.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Sopa Crema de Zapallo",
+                        ingredientes = listOf("Zapallo", "Cebolla", "Crema", "Ajo"),
+                        pasos = "1. Cocina el zapallo y la cebolla.\n2. Procesa hasta obtener una crema.\n3. Agrega crema y sirve caliente.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Ensalada de Quinoa",
+                        ingredientes = listOf("Quinoa", "Palta", "Tomate", "Pepino", "Limón"),
+                        pasos = "1. Cocina la quinoa y deja enfriar.\n2. Mezcla con palta, tomate y pepino.\n3. Aliña con limón y sal.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Tortilla de Espinacas",
+                        ingredientes = listOf("Espinacas", "Huevo", "Cebolla", "Ajo", "Sal"),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega las espinacas y cocina hasta que estén tiernas.\n3. Mezcla con huevo y cocina hasta que esté cuajado.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Sopa de Lentejas",
+                        ingredientes = listOf(
+                            "Lentejas",
+                            "Cebolla",
+                            "Ajo",
+                            "Zanahoria",
+                            "Caldo de verduras"
+                        ),
+                        pasos = "1. Sofríe la cebolla y el ajo en aceite de oliva hasta que estén suaves.\n2. Agrega las lentejas, zanahoria y caldo de verduras.\n3. Cocina hasta que las lentejas estén tiernas.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Ensalada de Garbanzos",
+                        ingredientes = listOf("Garbanzos", "Cebolla", "Pepino", "Tomate", "Limón"),
+                        pasos = "1. Mezcla los garbanzos con cebolla, pepino y tomate.\n2. Aliña con limón y sal.\n3. Sirve fresco.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Tarta de Verduras",
+                        ingredientes = listOf("Masa de tarta", "Verduras", "Huevo", "Queso"),
+                        pasos = "1. Cocina las verduras y mézclalas con huevo.\n2. Coloca sobre la masa y agrega queso.\n3. Hornea hasta que cuaje.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Salsa de Aguacate",
+                        ingredientes = listOf("Aguacate", "Cebolla", "Ajo", "Limón", "Sal"),
+                        pasos = "1. Mezcla el aguacate con cebolla, ajo y limón.\n2. Salpimienta al gusto.\n3. Sirve fresco.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Ensalada de Frutas",
+                        ingredientes = listOf("Frutas", "Limón", "Miel"),
+                        pasos = "1. Mezcla las frutas y aliña con limón y miel.\n2. Sirve fresco.",
+                        esVegana = true
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Batido de Plátano",
+                        ingredientes = listOf("Plátano", "Leche", "Miel"),
+                        pasos = "1. Mezcla el plátano con leche y miel.\n2. Licúa hasta obtener un batido suave.\n3. Sirve fresco.",
+                        esVegana = false
+                    ),
+                    Receta(
+                        id = ref.push().key ?: "",
+                        nombre = "Galletas de Avena",
+                        ingredientes = listOf("Avena", "Harina", "Azúcar", "Huevo", "Mantequilla"),
+                        pasos = "1. Mezcla la avena con harina, azúcar y huevo.\n2. Agrega mantequilla y mezcla hasta obtener una masa.\n3. Hornea hasta que estén doradas.",
+                        esVegana = true
                     )
                 )
 
@@ -88,21 +295,23 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@Composable
-fun AppNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "login") {
-        composable("login") { LoginScreen(navController) }
-        composable("registro") { RegistroScreen(navController) }
-        composable("recuperar") { RecuperarPasswordScreen(navController) }
-        composable("home") { HomeScreen(navController) }
-        composable("recetas") { RecipeScreen(navController) }
+    @Composable
+    fun AppNavigation(navController: NavHostController) {
+        NavHost(navController = navController, startDestination = "login") {
+            composable("login") { LoginScreen(navController) }
+            composable("registro") { RegistroScreen(navController) }
+            composable("recuperar") { RecuperarPasswordScreen(navController) }
+            composable("home") { HomeScreen(navController) }
+            composable("menu_recetas") { MenuRecetasScreen(navController) }
+            composable("recetas_generales") { RecipeScreen(navController, false) }
+            composable("recetas_veganas") { RecipeScreen(navController, true) }
 
-        // Ajuste para pasar la ID de la receta
-        composable("detalle_receta/{id}") { backStackEntry ->
-            val recetaId = backStackEntry.arguments?.getString("id") ?: ""
-            RecipeDetailScreen(navController, recetaId)
+            // Ajuste para pasar la ID de la receta
+            composable("detalle_receta/{id}") { backStackEntry ->
+                val recetaId = backStackEntry.arguments?.getString("id") ?: ""
+                RecipeDetailScreen(navController, recetaId)
+            }
         }
     }
 }
